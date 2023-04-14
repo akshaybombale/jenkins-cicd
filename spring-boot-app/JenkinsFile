@@ -9,7 +9,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-            sh 'mvn clean package'
+            sh 'cd jenkins-cicd/spring-boot-app && mvn clean package'
             }
         }
         
