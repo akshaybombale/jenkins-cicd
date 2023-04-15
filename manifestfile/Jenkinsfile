@@ -3,25 +3,28 @@ node {
 
     stage('Clone repository') {
       
-      checkout scm
+        git branch: 'main', url: 'https://github.com/akshaybombale/jenkins-cicd.git'
     }
 
-    stage('Update GIT') {
+     stage('Update GIT') {
             script {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     withCredentials([usernamePassword(credentialsId: 'github', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
                         //def encodedPassword = URLEncoder.encode("$GIT_PASSWORD",'UTF-8')
-                        sh "git config user.email akshaybombale70@gmail.com.com"
+                        sh "git config user.email akshaybombale70@gmail.com"
                         sh "git config user.name akshaybombale"
                         //sh "git switch master"
-                       
-                        sh 'sed -i "s+akshayb412/bootimg.*+akshayb412/animal:${DOCKERTAG}+g" /home/ubuntu/jenkins-cicd/manifestfile/deployment.yaml'
-            
-                        sh "git add ."
-                        sh "git commit -m 'Done by Jenkins Job changemanifest: ${env.BUILD_NUMBER}'"
-                        sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/jenkins-cicd.git HEAD:main"
-      }
+                        sh "cat /home/ubuntu/jenkins-cicd/manifestfile/deployment.yaml"
+                        sh "sed -i 's+akshayb412/animal.*+akshayb412/animal:${BUILD_NUMBER}+g' /home/ubuntu/jenkins-cicd/manifestfile/deployment.yaml"
+                        sh "cat /home/ubuntu/jenkins-cicd/manifestfile/deployment.yaml"
+                        sh "cd /home/ubuntu/jenkins-cicd/manifestfile && git add ."
+                        sh "cd /home/ubuntu/jenkins-cicd/manifestfile && git commit -m 'Done by Jenkins Job changemanifest: ${env.BUILD_NUMBER}'"
+                        //sh 'git log --oneline'
+                        sh "cd /home/ubuntu/jenkins-cicd/manifestfile git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/${GIT_USERNAME}/jenkins-cicd.git HEAD:main"
+           }
+       }
     }
   }
 }
+
 
