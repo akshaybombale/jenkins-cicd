@@ -1,0 +1,49 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('git_checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/akshaybombale/spring-petclinic.git'
+            }
+        }
+        stage('Build') {
+            steps {
+             
+             sh 'mvn clean package'
+            }
+        }
+        
+        stage('Static Code Analysis') {
+            environment {
+              SONAR_URL = "http://localhost:9000"
+      }
+      steps {
+        withCredentials([string(credentialsId: 'sonarqube', variable: 'SONAR_AUTH_TOKEN')]) {
+          sh 'mvn sonar:sonar -Dsonar.login=$SONAR_AUTH_TOKEN -Dsonar.host.url=${SONAR_URL}'
+        }
+      }
+    }
+        stage('Build docker image') {
+            steps {
+         
+             sh 'docker build -t akshayb412/abhishek:${BUILD_NUMBER} .'
+          }
+        }
+        stage('Docker Push') {
+            steps {
+         
+             sh 'docker push akshayb412/abhishek:${BUILD_NUMBER}'
+          }
+        }
+         stage('Trigger ManifestUpdate') {
+             steps{
+                echo "triggering updatemanifestjob"
+                build job: 'updatemanifest', parameters: [string(name: 'DOCKERTAG', value: env.BUILD_NUMBER)]
+             }
+        }
+         
+    }
+  }
+
+
