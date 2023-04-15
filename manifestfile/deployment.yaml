@@ -1,37 +1,38 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: spring-boot-app
+  creationTimestamp: null
   labels:
-    app: spring-boot-app
+    app: cicdapp
+  name: cicdapp
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
-      app: spring-boot-app
+      app: cicdapp
+  strategy: {}
   template:
     metadata:
+      creationTimestamp: null
       labels:
-        app: spring-boot-app
+        app: cicdapp
     spec:
       containers:
-      - name: spring-boot-app
-        image: akshayb412/animal:33
-        ports:
-        - containerPort: 8080
-
-
+      - image: akshayb412/animal:33
+        name: cicdapp
+        resources: {}
+status: {}
 ---
 apiVersion: v1
 kind: Service
-  metadata:
-    name: spring-boot-app-service
-  spec:
-    type: NodeBalancer
-    ports:
-    - name: http
-      port: 80
-      targetPort: 5000
-      protocol: TCP
-    selector:
-      app: spring-boot-app
+metadata:
+  name: lb-service
+  labels:
+    app: lb-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 5000
+  selector:
+    app: cicdapp
