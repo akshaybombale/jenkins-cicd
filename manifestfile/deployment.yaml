@@ -18,7 +18,7 @@ spec:
         app: cicdapp
     spec:
       containers:
-      - image: akshayb412/animal:34
+      - image: akshayb412/abhishek:50
         name: cicdapp
         resources: {}
 status: {}
