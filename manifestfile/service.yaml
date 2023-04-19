@@ -2,13 +2,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: lb-service
-  labels:
-    app: lb-service
+  name: cicdapp
 spec:
-  type: LoadBalancer
-  ports:
-  - port: 80
-    targetPort: 5000
-  selector:
-    app: cicdapp
+    type: NodePort
+    ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+      protocol: TCP
+    selector:
+      app: cicdapp
