@@ -1,24 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  creationTimestamp: null
+  name: cicdapp
   labels:
     app: cicdapp
-    name: cicdapp
 spec:
-    replicas: 3
-    selector:
-       matchLabels:
-        app: cicdapp
- 
-    template:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: cicdapp
+  template:
     metadata:
-      creationTimestamp: null
       labels:
         app: cicdapp
     spec:
       containers:
-      - image: akshayb412/abhishek:50
-        name: cicdapp
-      
+      - name: cicdapp
+        image: akshayb412/abhishek:50
+        ports:
+        - containerPort: 8080
     
