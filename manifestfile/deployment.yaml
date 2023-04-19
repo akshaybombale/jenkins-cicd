@@ -21,6 +21,7 @@ spec:
       - image: akshayb412/abhishek:50
         name: cicdapp
         resources: {}
+status: {}        
     
 ---
 apiVersion: v1
