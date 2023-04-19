@@ -6,7 +6,7 @@ metadata:
     app: cicdapp
   name: cicdapp
 spec:
-        replicas: 1
+        replicas: 3
   selector:
     matchLabels:
       app: cicdapp
@@ -21,7 +21,7 @@ spec:
       - image: akshayb412/abhishek:50
         name: cicdapp
         resources: {}
-        status: {}
+    
 ---
 apiVersion: v1
 kind: Service
