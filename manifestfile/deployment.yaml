@@ -4,14 +4,14 @@ metadata:
   creationTimestamp: null
   labels:
     app: cicdapp
-  name: cicdapp
+    name: cicdapp
 spec:
-        replicas: 3
-  selector:
-    matchLabels:
-      app: cicdapp
-  strategy: {}
-  template:
+    replicas: 3
+    selector:
+       matchLabels:
+        app: cicdapp
+ 
+    template:
     metadata:
       creationTimestamp: null
       labels:
@@ -36,4 +36,3 @@ spec:
     targetPort: 5000
   selector:
     app: cicdapp
-  
